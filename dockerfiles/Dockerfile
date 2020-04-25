@@ -41,6 +41,9 @@ RUN useradd -d $ES_HOME -M -s /bin/false -U $ES_USER \
 ## Change User
 USER elasticsearch
 
+## Copy configuration
+COPY config /elasticsearch/config
+
 ## Default working directory
 WORKDIR /opt/elasticsearch
 
