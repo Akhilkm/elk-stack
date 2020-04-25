@@ -39,13 +39,14 @@ RUN useradd -d $ES_HOME -M -s /bin/false -U $ES_USER \
     && chown -R ${ES_USER}:${ES_GROUP} /opt/elasticsearch*
 
 ## Change User
-USER elasticsearch
+USER ${ES_USER}
 
 ## Copy configuration
-COPY config /elasticsearch/config
+COPY config elasticsearch/config
+COPY run.sh ${ES_HOME}/
 
 ## Default working directory
-WORKDIR /opt/elasticsearch
+WORKDIR ${ES_HOME}
 
 ## Start command
-CMD [ "./bin/elasticsearch" ]
+CMD [ "bash", "-c", "${ES_HOME}/run.sh" ]
