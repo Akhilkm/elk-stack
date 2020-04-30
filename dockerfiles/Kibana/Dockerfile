@@ -16,16 +16,12 @@ ENV PATH /opt/kibana/bin:$PATH
 ENV KIBANA_USER "kibana"
 ENV KIBANA_GROUP "kibana"
 ENV KIBANA_HOME "/opt/kibana"
-ENV JAVA_HOME "/usr/lib/jvm/java-11-openjdk-amd64" 
 
 ## Install dependant libraries
 RUN apt-get update && apt-get install curl build-essential gcc make -y \
-    && apt-get install software-properties-common  -y
+    && apt-get install software-properties-common -y
 
-## Install openjdk-8-jdk 
-RUN apt-get install openjdk-11-jre-headless -y
-
-## Install elasticsearch 
+## Install Kibana 
 RUN cd /opt \
     && curl -O https://artifacts.elastic.co/downloads/kibana/kibana-${KIBANA_VERSION}-linux-x86_64.tar.gz \
     && curl https://artifacts.elastic.co/downloads/kibana/kibana-${KIBANA_VERSION}-linux-x86_64.tar.gz.sha512 | shasum -a 512 -c -  \
@@ -41,7 +37,7 @@ RUN useradd -d $KIBANA_HOME -M -s /bin/false -U $KIBANA_USER \
 USER ${KIBANA_USER}
 
 ## Copy configuration
-COPY config kibana/config
+COPY config $KIBANA_HOME/config
 COPY run.sh ${KIBANA_HOME}/
 
 ## Default working directory

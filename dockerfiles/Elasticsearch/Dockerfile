@@ -34,16 +34,16 @@ RUN cd /opt \
     && rm -rf elasticsearch-${ES_VERSION}*.tar.gz* \
     && ln -s /opt/elasticsearch-${ES_VERSION} /opt/elasticsearch
 
+## Copy configuration
+COPY config ${ES_HOME}/config
+COPY run.sh ${ES_HOME}/
+
 ## User creation
 RUN useradd -d $ES_HOME -M -s /bin/false -U $ES_USER \
     && chown -R ${ES_USER}:${ES_GROUP} /opt/elasticsearch*
 
 ## Change User
 USER ${ES_USER}
-
-## Copy configuration
-COPY config elasticsearch/config
-COPY run.sh ${ES_HOME}/
 
 ## Default working directory
 WORKDIR ${ES_HOME}
